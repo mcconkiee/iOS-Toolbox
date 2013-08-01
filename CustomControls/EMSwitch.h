@@ -10,5 +10,5 @@
 
 @interface EMSwitch : UIControl<UIGestureRecognizerDelegate>
 @property (nonatomic)BOOL isOn;
-
+@property (nonatomic,weak)UIImage *sliderImage;
 @end

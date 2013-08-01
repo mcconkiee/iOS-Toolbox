@@ -21,6 +21,8 @@
 		A17B782117AAA9C8006D9DCA /* EMSwitch.m in Sources */ = {isa = PBXBuildFile; fileRef = A17B782017AAA9C8006D9DCA /* EMSwitch.m */; };
 		A17B782C17AAD56F006D9DCA /* thumb.png in Resources */ = {isa = PBXBuildFile; fileRef = A17B782A17AAD56F006D9DCA /* thumb.png */; };
 		A17B782D17AAD56F006D9DCA /* thumb@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A17B782B17AAD56F006D9DCA /* thumb@2x.png */; };
+		A17B783017AAEC8D006D9DCA /* skinny.png in Resources */ = {isa = PBXBuildFile; fileRef = A17B782E17AAEC8D006D9DCA /* skinny.png */; };
+		A17B783117AAEC8D006D9DCA /* skinny@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A17B782F17AAEC8D006D9DCA /* skinny@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,6 +46,8 @@
 		A17B782017AAA9C8006D9DCA /* EMSwitch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMSwitch.m; sourceTree = "<group>"; };
 		A17B782A17AAD56F006D9DCA /* thumb.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = thumb.png; sourceTree = SOURCE_ROOT; };
 		A17B782B17AAD56F006D9DCA /* thumb@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "thumb@2x.png"; sourceTree = SOURCE_ROOT; };
+		A17B782E17AAEC8D006D9DCA /* skinny.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = skinny.png; sourceTree = SOURCE_ROOT; };
+		A17B782F17AAEC8D006D9DCA /* skinny@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "skinny@2x.png"; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -105,6 +109,8 @@
 		A17B780317AAA9B3006D9DCA /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				A17B782E17AAEC8D006D9DCA /* skinny.png */,
+				A17B782F17AAEC8D006D9DCA /* skinny@2x.png */,
 				A17B782A17AAD56F006D9DCA /* thumb.png */,
 				A17B782B17AAD56F006D9DCA /* thumb@2x.png */,
 				A17B780417AAA9B3006D9DCA /* CustomControls-Info.plist */,
@@ -177,6 +183,8 @@
 				A17B781917AAA9B3006D9DCA /* EMViewController.xib in Resources */,
 				A17B782C17AAD56F006D9DCA /* thumb.png in Resources */,
 				A17B782D17AAD56F006D9DCA /* thumb@2x.png in Resources */,
+				A17B783017AAEC8D006D9DCA /* skinny.png in Resources */,
+				A17B783117AAEC8D006D9DCA /* skinny@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -313,6 +321,7 @@
 				A17B781E17AAA9B3006D9DCA /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

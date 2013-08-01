@@ -7,7 +7,7 @@
 //
 
 #import "EMSwitch.h"
-#define maxleft -57.0
+
 #define maxRight 0.0
 @interface EMSwitch ()
 @property (nonatomic,weak)UIView *thumb;
@@ -15,58 +15,70 @@
 @property (nonatomic)CGFloat delta;
 @property (nonatomic)NSTimeInterval onDownTimeInterval;
 @property (nonatomic)NSTimeInterval onUpTimeInterval;
+@property (nonatomic,weak)UIImageView *trackSliderImageView;
+@property (nonatomic)CGFloat maxLeft;
 @end
 
 @implementation EMSwitch
+
+
 
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
-        self.thumb =[self createThumb];
-        [self addSubview:self.thumb];
+        UIImage *i = [UIImage imageNamed:@"thumb"];
+        [self setSliderImage:i];
         [self setClipsToBounds:YES];
         [self setBackgroundColor:[UIColor clearColor]];
-       
+        [self setIsOn:YES];
         
     }
     return self;
 }
-
--(UIView*)createThumb
-{
-    UIImage *i = [UIImage imageNamed:@"thumb"];
-    UIImageView *v = [[UIImageView alloc] initWithImage:i];
-    UIView *vv = [[UIView alloc] initWithFrame:CGRectMake(0, 0, i.size.width, i.size.height)];
-    [vv addSubview:v];
+-(void)setSliderImage:(UIImage *)asliderImage{
+    self.maxLeft = -asliderImage.size.width/2 +15;
+    
+    if (self.trackSliderImageView == nil){
+        UIImageView *v = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, asliderImage.size.width, asliderImage.size.height)];
+        [self setTrackSliderImageView:v];
+        UIView *vv = [[UIView alloc] initWithFrame:CGRectMake(0, 0, asliderImage.size.width, asliderImage.size.height)];
+        [vv addSubview:self.trackSliderImageView];
+        [self addSubview:vv];
+        [self setThumb:vv];
+    }
+    
+    
+    [self.trackSliderImageView setImage:asliderImage];
+    
     
     self.delta= 0.0;
     
-//    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onTap:)];
-//    [vv addGestureRecognizer:tap];
     
-    return vv;
+    [self setNeedsDisplay];
 }
-
 -(void)setIsOn:(BOOL)aisOn
 {
+    BOOL olVal = _isOn;
     _isOn = aisOn;
     CGRect thumbrect = self.thumb.frame;
     if (_isOn) {
         thumbrect.origin.x = maxRight;
     }else
-        thumbrect.origin.x = maxleft;
+        thumbrect.origin.x = self.maxLeft;
     
     [UIView animateWithDuration:0.4 animations:^{
         [self.thumb setFrame:thumbrect];
     }];
+    
+    if (olVal!=_isOn) {
+        [self sendActionsForControlEvents:UIControlEventValueChanged];
+    }
 }
 
 
 -(void)onTap:(UITapGestureRecognizer*)tap
 {
-
-        NSLog(@"tap\r\n---> %@",tap);
     CGPoint here = [tap locationInView:self];
     CGFloat half = self.frame.size.width/2;
     if (here.x > half) {//right tap
@@ -88,8 +100,8 @@
     float x = (curTouch.x - self.delta);
     if(x>maxRight)
         x = maxRight;
-    if (x<maxleft)
-        x= maxleft;
+    if (x<self.maxLeft)
+        x= self.maxLeft;
 
     [self.thumb setFrame:CGRectMake(x, 0, self.thumb.frame.size.width, self.thumb.frame.size.height)];
 
@@ -97,7 +109,6 @@
 -(void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event{
     self.onUpTimeInterval = [[NSDate date] timeIntervalSince1970];
     double timePast = (self.onUpTimeInterval - self.onDownTimeInterval);
-    NSLog(@"timepast\r\n---> %f",timePast);
     BOOL isTap = timePast<0.15;
     
     UITouch *touch = [touches anyObject];

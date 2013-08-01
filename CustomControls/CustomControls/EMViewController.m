@@ -19,16 +19,19 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
     
-    EMSwitch *switcheroo = [[EMSwitch alloc] initWithFrame:CGRectMake(0, 0, 85, 50)];
+    EMSwitch *switcheroo = [[EMSwitch alloc] initWithFrame:CGRectMake(20, 20, 85, 27)];
+    [switcheroo addTarget:self action:@selector(onswitch:) forControlEvents:UIControlEventValueChanged];
     
-//    [switcheroo addTarget:self action:@selector(onswitch:) forControlEvents:UIControlEventValueChanged];
+    EMSwitch *switcheroo2 = [[EMSwitch alloc] initWithFrame:CGRectMake(20, 60, 85, 27)];
+    [switcheroo2 addTarget:self action:@selector(onswitch:) forControlEvents:UIControlEventValueChanged];
+    [switcheroo2 setSliderImage:[UIImage imageNamed:@"skinny"]];
+    
     [self.view addSubview:switcheroo];
+    [self.view addSubview:switcheroo2];
 }
-
-- (void)didReceiveMemoryWarning
+-(void)onswitch:(EMSwitch*)sender
 {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+    NSLog(@"sender\r\n---> %@",sender);
+    NSLog(@"sender is on?\r\n---> %d",sender.isOn);
 }
-
 @end
