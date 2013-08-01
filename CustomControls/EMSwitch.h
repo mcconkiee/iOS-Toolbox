@@ -8,8 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-@interface EMSwitch : UIControl<UIGestureRecognizerDelegate>
+@interface EMSwitch : UIControl
 @property (nonatomic)BOOL isOn;
+
+-(void)setIsOn:(BOOL)aisOn animated:(BOOL)animated;
 @property (nonatomic,weak)UIImage *trackImage;
 @property (nonatomic,weak)UIImage *thumbImage;
 @end

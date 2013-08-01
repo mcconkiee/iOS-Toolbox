@@ -39,6 +39,7 @@
         [trackImageView setContentMode:UIViewContentModeCenter];
         [self setTrackSliderImageView:trackImageView];
         UIView *vv = [[UIView alloc] initWithFrame:CGRectZero];
+        [vv setBackgroundColor:[UIColor clearColor]];
         [self setTrackSliderImageViewContainer:vv];
         [vv addSubview:self.trackSliderImageView];
         [self addSubview:vv];
@@ -80,6 +81,15 @@
 
 -(void)setIsOn:(BOOL)aisOn
 {
+    [self setIsOn:aisOn animated:YES];
+}
+-(void)setIsOn:(BOOL)aisOn animated:(BOOL)animated
+{
+    [self setIsOn:aisOn animated:animated speed:0.4];
+}
+
+-(void)setIsOn:(BOOL)aisOn animated:(BOOL)animated speed:(float)speed
+{
     BOOL olVal = _isOn;
     _isOn = aisOn;
     CGRect thumbrect = self.track.frame;
@@ -88,9 +98,12 @@
     }else
         thumbrect.origin.x = self.maxLeft;
     
-    [UIView animateWithDuration:0.4 animations:^{
+    if (animated) {
+        [UIView animateWithDuration:speed animations:^{
+            [self.track setFrame:thumbrect];
+        }];
+    }else
         [self.track setFrame:thumbrect];
-    }];
     
     if (olVal!=_isOn) {
         [self sendActionsForControlEvents:UIControlEventValueChanged];
@@ -137,28 +150,26 @@
     CGPoint here = [touch locationInView:self];
     CGFloat half = self.frame.size.width/2;
     float x = (self.lastTouch.x - here.x);
-    if (isTap) {
+    if (isTap) {//treat this as a tap
         
         if (here.x > half) {//right tap
             [self setIsOn:YES];
         }else
             [self setIsOn:NO];
         return;
-    }else{
+    }else{//treat this as a slide
         BOOL isOffDirection = self.lastTouch.x > here.x;
         BOOL isSufficient = abs(x)>half/2;
        
         if (isSufficient) {
-            [self setIsOn:!isOffDirection];
+            [self setIsOn:!isOffDirection animated:NO];
         }else
-            [self setIsOn:self.isOn];
+            [self setIsOn:self.isOn animated:NO];
     }
     
     
     
 }
-#pragma mark -
-#pragma mark GESTURE
 
 
 

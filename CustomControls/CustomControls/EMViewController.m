@@ -22,14 +22,14 @@
     EMSwitch *switcheroo = [[EMSwitch alloc] initWithFrame:CGRectMake(20, 20, 85, 27)];
     [switcheroo addTarget:self action:@selector(onswitch:) forControlEvents:UIControlEventValueChanged];
     
-    EMSwitch *switcheroo2 = [[EMSwitch alloc] initWithFrame:CGRectMake(20, 60, 85, 27)];
+    EMSwitch *switcheroo2 = [[EMSwitch alloc] initWithFrame:CGRectMake(20, 60, 85, 30)];
     [switcheroo2 addTarget:self action:@selector(onswitch:) forControlEvents:UIControlEventValueChanged];
     [switcheroo2 setTrackImage:[UIImage imageNamed:@"skinny"]];
 
-    UIImage *shortImage = [UIImage imageNamed:@"short"];
-    EMSwitch *shorter = [[EMSwitch alloc] initWithFrame:CGRectMake(20, 100, 49,shortImage.size.height)];
+    UIImage *shortTrackImage = [UIImage imageNamed:@"short"];
+    EMSwitch *shorter = [[EMSwitch alloc] initWithFrame:CGRectMake(20, 100, 49,shortTrackImage.size.height)];
     [shorter addTarget:self action:@selector(onswitch:) forControlEvents:UIControlEventValueChanged];
-    [shorter setTrackImage:shortImage];
+    [shorter setTrackImage:shortTrackImage];
     
     [self.view addSubview:switcheroo];
     [self.view addSubview:switcheroo2];
