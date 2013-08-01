@@ -8,15 +8,23 @@
 
 #import "EMSwitch.h"
 
-#define maxRight 0.0
+#define maxRight    0.0
+
 @interface EMSwitch ()
+@property (nonatomic,weak)UIView *track;
+@property (nonatomic,weak)UIImageView *trackSliderImageView;
+@property (nonatomic,weak)UIView *trackSliderImageViewContainer;
+
 @property (nonatomic,weak)UIView *thumb;
+@property (nonatomic,weak)UIImageView *thumbImageView;
+
+
 @property (nonatomic)CGPoint lastTouch;
 @property (nonatomic)CGFloat delta;
 @property (nonatomic)NSTimeInterval onDownTimeInterval;
 @property (nonatomic)NSTimeInterval onUpTimeInterval;
-@property (nonatomic,weak)UIImageView *trackSliderImageView;
 @property (nonatomic)CGFloat maxLeft;
+
 @end
 
 @implementation EMSwitch
@@ -27,8 +35,24 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        UIImage *i = [UIImage imageNamed:@"thumb"];
-        [self setSliderImage:i];
+        UIImageView *trackImageView = [[UIImageView alloc] initWithFrame:CGRectZero];
+        [trackImageView setContentMode:UIViewContentModeCenter];
+        [self setTrackSliderImageView:trackImageView];
+        UIView *vv = [[UIView alloc] initWithFrame:CGRectZero];
+        [self setTrackSliderImageViewContainer:vv];
+        [vv addSubview:self.trackSliderImageView];
+        [self addSubview:vv];
+        [self setTrack:vv];
+        
+        UIImageView *thumbImgView = [[UIImageView alloc] initWithFrame:CGRectZero];
+        [self setThumbImageView:thumbImgView];
+        [vv addSubview:thumbImgView];
+        
+        UIImage *i = [UIImage imageNamed:@"track"];
+        [self setTrackImage:i];
+        UIImage *origThumbImage = [UIImage imageNamed:@"thumb"];
+        [self setThumbImage:origThumbImage];
+        
         [self setClipsToBounds:YES];
         [self setBackgroundColor:[UIColor clearColor]];
         [self setIsOn:YES];
@@ -36,39 +60,36 @@
     }
     return self;
 }
--(void)setSliderImage:(UIImage *)asliderImage{
-    self.maxLeft = -asliderImage.size.width/2 +15;
-    
-    if (self.trackSliderImageView == nil){
-        UIImageView *v = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, asliderImage.size.width, asliderImage.size.height)];
-        [self setTrackSliderImageView:v];
-        UIView *vv = [[UIView alloc] initWithFrame:CGRectMake(0, 0, asliderImage.size.width, asliderImage.size.height)];
-        [vv addSubview:self.trackSliderImageView];
-        [self addSubview:vv];
-        [self setThumb:vv];
-    }
-    
-    
+-(void)setTrackImage:(UIImage *)asliderImage{
+    _trackImage = asliderImage;
+    self.maxLeft = (self.thumbImage.size.width/2) - (self.trackImage.size.width/2)  ;
+    [self.trackSliderImageViewContainer setFrame:CGRectMake(0, 0, asliderImage.size.width, asliderImage.size.height)];
+    self.trackSliderImageView.frame = self.trackSliderImageViewContainer.frame ;
     [self.trackSliderImageView setImage:asliderImage];
-    
-    
-    self.delta= 0.0;
-    
+    self.delta= 0.0;    
+    [self setNeedsDisplay];
+}
+-(void)setThumbImage:(UIImage *)athumbImage{
+    _thumbImage = athumbImage;
+    self.maxLeft = (self.thumbImage.size.width/2) - (self.trackImage.size.width/2)  ;
+    self.thumbImageView.frame = CGRectMake(self.frame.size.width - self.thumbImage.size.width, 0, self.thumbImage.size.width, self.thumbImage.size.height);
+    [self.thumbImageView setImage:self.thumbImage];
     
     [self setNeedsDisplay];
 }
+
 -(void)setIsOn:(BOOL)aisOn
 {
     BOOL olVal = _isOn;
     _isOn = aisOn;
-    CGRect thumbrect = self.thumb.frame;
+    CGRect thumbrect = self.track.frame;
     if (_isOn) {
         thumbrect.origin.x = maxRight;
     }else
         thumbrect.origin.x = self.maxLeft;
     
     [UIView animateWithDuration:0.4 animations:^{
-        [self.thumb setFrame:thumbrect];
+        [self.track setFrame:thumbrect];
     }];
     
     if (olVal!=_isOn) {
@@ -91,19 +112,20 @@
     UITouch *touch = [touches anyObject];
     self.onDownTimeInterval = [[NSDate date] timeIntervalSince1970];
     self.lastTouch = [touch locationInView:self];
-    self.delta = [touch locationInView:self].x - self.thumb.frame.origin.x ;
+    self.delta = [touch locationInView:self].x - self.track.frame.origin.x ;
 }
 -(void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
 {
     UITouch *touch = [touches anyObject];
     CGPoint curTouch = [touch locationInView:self];
     float x = (curTouch.x - self.delta);
+    NSLog(@"x\r\n---> %f",self.track.frame.origin.x);
     if(x>maxRight)
         x = maxRight;
     if (x<self.maxLeft)
         x= self.maxLeft;
 
-    [self.thumb setFrame:CGRectMake(x, 0, self.thumb.frame.size.width, self.thumb.frame.size.height)];
+    [self.track setFrame:CGRectMake(x, 0, self.track.frame.size.width, self.track.frame.size.height)];
 
 }
 -(void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event{

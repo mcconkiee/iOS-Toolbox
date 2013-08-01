@@ -24,10 +24,16 @@
     
     EMSwitch *switcheroo2 = [[EMSwitch alloc] initWithFrame:CGRectMake(20, 60, 85, 27)];
     [switcheroo2 addTarget:self action:@selector(onswitch:) forControlEvents:UIControlEventValueChanged];
-    [switcheroo2 setSliderImage:[UIImage imageNamed:@"skinny"]];
+    [switcheroo2 setTrackImage:[UIImage imageNamed:@"skinny"]];
+
+    UIImage *shortImage = [UIImage imageNamed:@"short"];
+    EMSwitch *shorter = [[EMSwitch alloc] initWithFrame:CGRectMake(20, 100, 49,shortImage.size.height)];
+    [shorter addTarget:self action:@selector(onswitch:) forControlEvents:UIControlEventValueChanged];
+    [shorter setTrackImage:shortImage];
     
     [self.view addSubview:switcheroo];
     [self.view addSubview:switcheroo2];
+    [self.view addSubview:shorter];
 }
 -(void)onswitch:(EMSwitch*)sender
 {
