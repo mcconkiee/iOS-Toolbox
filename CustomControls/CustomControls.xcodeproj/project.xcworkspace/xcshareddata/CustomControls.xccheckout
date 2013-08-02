@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>5BAE4998-CCDB-4650-AAA2-CC559F382AF7</string>
+	<key>IDESourceControlProjectName</key>
+	<string>CustomControls</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>460577C7-AAB9-4A66-B6AC-2C514F14677A</key>
+		<string>https://github.com/mcconkiee/iOS-Toolbox.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>CustomControls/CustomControls.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>460577C7-AAB9-4A66-B6AC-2C514F14677A</key>
+		<string>../../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/mcconkiee/iOS-Toolbox.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>460577C7-AAB9-4A66-B6AC-2C514F14677A</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>460577C7-AAB9-4A66-B6AC-2C514F14677A</string>
+			<key>IDESourceControlWCCName</key>
+			<string>iOS-Toolbox</string>
+		</dict>
+	</array>
+</dict>
+</plist>

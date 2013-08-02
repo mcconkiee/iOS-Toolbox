@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface EMViewController : UIViewController
+@interface EMViewController : UIViewController<UITextFieldDelegate>
 
 @end
