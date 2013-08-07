@@ -58,25 +58,39 @@
         [self setBackgroundColor:[UIColor clearColor]];
         [self setIsOn:YES];
         
+        
+        
     }
     return self;
 }
+-(void)doFrames
+{
+    self.maxLeft = (self.thumbImage.size.width/2) - (self.trackImage.size.width/2)  ;
+    [self.trackSliderImageViewContainer setFrame:CGRectMake(0, 0, self.trackImage.size.width, self.trackImage.size.height)];
+    self.thumbImageView.frame = CGRectMake(self.trackImage.size.width/2 - self.thumbImage.size.width/2, 0, self.thumbImage.size.width, self.thumbImage.size.height);
+    self.trackSliderImageView.frame = self.trackSliderImageViewContainer.frame ;
+    
+
+    [self setFrame:CGRectMake(self.frame.origin.x,
+                              self.frame.origin.y,
+                              self.trackImage.size.width/2 + self.thumbImage.size.width/2,self.thumbImage.size.height)];
+    [self setNeedsDisplay];
+}
 -(void)setTrackImage:(UIImage *)asliderImage{
     _trackImage = asliderImage;
-    self.maxLeft = (self.thumbImage.size.width/2) - (self.trackImage.size.width/2)  ;
-    [self.trackSliderImageViewContainer setFrame:CGRectMake(0, 0, asliderImage.size.width, asliderImage.size.height)];
-    self.trackSliderImageView.frame = self.trackSliderImageViewContainer.frame ;
+    
     [self.trackSliderImageView setImage:asliderImage];
-    self.delta= 0.0;    
-    [self setNeedsDisplay];
+    self.delta= 0.0;
+    
+
+    [self doFrames];
 }
 -(void)setThumbImage:(UIImage *)athumbImage{
     _thumbImage = athumbImage;
-    self.maxLeft = (self.thumbImage.size.width/2) - (self.trackImage.size.width/2)  ;
-    self.thumbImageView.frame = CGRectMake(self.frame.size.width - self.thumbImage.size.width, 0, self.thumbImage.size.width, self.thumbImage.size.height);
+    
     [self.thumbImageView setImage:self.thumbImage];
     
-    [self setNeedsDisplay];
+    [self doFrames];
 }
 
 -(void)setIsOn:(BOOL)aisOn

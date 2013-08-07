@@ -27,6 +27,8 @@
 	<key>UIAppFonts</key>
 	<array>
 		<string>Dosis-Medium.ttf</string>
+		<string>Dosis-Regular.ttf</string>
+		<string>OpenSans-Regular.ttf</string>
 	</array>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
