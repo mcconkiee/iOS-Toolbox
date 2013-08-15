@@ -8,10 +8,18 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol EMSwitchDelegate <NSObject>
+
+@optional
+-(BOOL)emSwitchCanSwitch:(id)emSwitch;
+
+@end
+
 @interface EMSwitch : UIControl
 @property (nonatomic)BOOL isOn;
 
 -(void)setIsOn:(BOOL)aisOn animated:(BOOL)animated;
 @property (nonatomic,weak)UIImage *trackImage;
 @property (nonatomic,weak)UIImage *thumbImage;
+@property (nonatomic,assign)id<EMSwitchDelegate> delegate;
 @end

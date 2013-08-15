@@ -44,7 +44,7 @@
         [vv addSubview:self.trackSliderImageView];
         [self addSubview:vv];
         [self setTrack:vv];
-        
+
         UIImageView *thumbImgView = [[UIImageView alloc] initWithFrame:CGRectZero];
         [self setThumbImageView:thumbImgView];
         [vv addSubview:thumbImgView];
@@ -56,45 +56,53 @@
         
         [self setClipsToBounds:YES];
         [self setBackgroundColor:[UIColor clearColor]];
-        [self setIsOn:YES];
+
         
-        
+        [self addObserver:self forKeyPath:@"isOn" options:NSKeyValueObservingOptionNew context:kFOTFKVOContext];
         
     }
     return self;
 }
--(void)doFrames
+-(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
-    self.maxLeft = (self.thumbImage.size.width/2) - (self.trackImage.size.width/2)  ;
-    [self.trackSliderImageViewContainer setFrame:CGRectMake(0, 0, self.trackImage.size.width, self.trackImage.size.height)];
-    self.thumbImageView.frame = CGRectMake(self.trackImage.size.width/2 - self.thumbImage.size.width/2, 0, self.thumbImage.size.width, self.thumbImage.size.height);
-    self.trackSliderImageView.frame = self.trackSliderImageViewContainer.frame ;
+    if ([keyPath isEqualToString:@"isOn"]) {
+        NSLog(@"change\r\n---> %@",change);
+        [self sendActionsForControlEvents:UIControlEventValueChanged];
+    }
+}
+- (void)dealloc
+{
     
-
+    [self removeObserver:self forKeyPath:@"isOn" context:kFOTFKVOContext];
+}
+-(void)setTrackImage:(UIImage *)asliderImage{
+    _trackImage = asliderImage;
+    self.maxLeft = (self.thumbImage.size.width/2) - (self.trackImage.size.width/2)  ;
+    [self.trackSliderImageViewContainer setFrame:CGRectMake(0, 0, asliderImage.size.width, asliderImage.size.height)];
+    self.trackSliderImageView.frame = self.trackSliderImageViewContainer.frame ;
+    [self.trackSliderImageView setImage:asliderImage];
+    self.delta= 0.0;
+    
+    [self setFrame:CGRectMake(self.frame.origin.x,
+                              self.frame.origin.y,
+                              self.trackImage.size.width/2 + self.thumbImage.size.width/2,self.thumbImage.size.height)];
+    
+    [self setNeedsDisplay];
+}
+-(void)setThumbImage:(UIImage *)athumbImage{
+    _thumbImage = athumbImage;
+    self.maxLeft = (self.thumbImage.size.width/2) - (self.trackImage.size.width/2)  ;
+    self.thumbImageView.frame = CGRectMake(self.trackImage.size.width/2 - self.thumbImage.size.width/2, 0, self.thumbImage.size.width, self.thumbImage.size.height);
+    [self.thumbImageView setImage:self.thumbImage];
     [self setFrame:CGRectMake(self.frame.origin.x,
                               self.frame.origin.y,
                               self.trackImage.size.width/2 + self.thumbImage.size.width/2,self.thumbImage.size.height)];
     [self setNeedsDisplay];
 }
--(void)setTrackImage:(UIImage *)asliderImage{
-    _trackImage = asliderImage;
-    
-    [self.trackSliderImageView setImage:asliderImage];
-    self.delta= 0.0;
-    
-
-    [self doFrames];
-}
--(void)setThumbImage:(UIImage *)athumbImage{
-    _thumbImage = athumbImage;
-    
-    [self.thumbImageView setImage:self.thumbImage];
-    
-    [self doFrames];
-}
 
 -(void)setIsOn:(BOOL)aisOn
 {
+    
     [self setIsOn:aisOn animated:YES];
 }
 -(void)setIsOn:(BOOL)aisOn animated:(BOOL)animated
@@ -104,7 +112,7 @@
 
 -(void)setIsOn:(BOOL)aisOn animated:(BOOL)animated speed:(float)speed
 {
-    BOOL olVal = _isOn;
+    
     _isOn = aisOn;
     CGRect thumbrect = self.track.frame;
     if (_isOn) {
@@ -119,14 +127,20 @@
     }else
         [self.track setFrame:thumbrect];
     
-    if (olVal!=_isOn) {
-        [self sendActionsForControlEvents:UIControlEventValueChanged];
-    }
+    
 }
 
 
 -(void)onTap:(UITapGestureRecognizer*)tap
 {
+    BOOL canSwitch = YES;
+    if ([self.delegate respondsToSelector:@selector(emSwitchCanSwitch:)]) {
+        canSwitch = [self.delegate emSwitchCanSwitch:self];
+    }
+    if (!canSwitch) {
+        return;
+    }
+    
     CGPoint here = [tap locationInView:self];
     CGFloat half = self.frame.size.width/2;
     if (here.x > half) {//right tap
@@ -146,7 +160,6 @@
     UITouch *touch = [touches anyObject];
     CGPoint curTouch = [touch locationInView:self];
     float x = (curTouch.x - self.delta);
-    NSLog(@"x\r\n---> %f",self.track.frame.origin.x);
     if(x>maxRight)
         x = maxRight;
     if (x<self.maxLeft)
@@ -164,6 +177,14 @@
     CGPoint here = [touch locationInView:self];
     CGFloat half = self.frame.size.width/2;
     float x = (self.lastTouch.x - here.x);
+    
+    BOOL canSwitch = YES;
+    if ([self.delegate respondsToSelector:@selector(emSwitchCanSwitch:)]) {
+        canSwitch = [self.delegate emSwitchCanSwitch:self];
+    }
+    if (!canSwitch) {
+        return;
+    }
     if (isTap) {//treat this as a tap
         
         if (here.x > half) {//right tap
